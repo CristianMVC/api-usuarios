@@ -1,0 +1,33 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    # database
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: symfony
+    database_user: root
+    database_password: ~
+
+    # Unit testing database
+    database_testing_driver: pdo_mysql
+    database_testing_host: 127.0.0.1
+    database_testing_port: ~
+    database_testing_name: symfony
+    database_testing_user: root
+    database_testing_password: ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
+    jwt_key_pass_phrase: ~
+    snt_signature_key: ~
+    snc_signature_key: ~
+    
+    # urls
+    system_base_url: ~
+    
+    # integrations
+    snt_api_url: ~
+    snc_api_url: ~
+    

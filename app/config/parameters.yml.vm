@@ -1,0 +1,27 @@
+# configuracion para el servidor vm
+parameters:
+    # database
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: snu_dev
+    database_user: root
+    database_password: root
+    # testing database
+    database_testing_driver: pdo_mysql
+    database_testing_host: localhost
+    database_testing_port: 3306
+    database_testing_name: snu_back
+    database_testing_user: root
+    database_testing_password: root
+    # security
+    secret: 37f9f4e165b033fb76cc2320838321cc57140e65
+    jwt_key_pass_phrase: 0f95db775183b6aa49b016c2b22b600e
+    snt_signature_key: XHiH7I7wV502uLxM9xrpii4XluB4wiuz
+    snc_signature_key: ZuCA2UsrUHH0uJj156gwvQ37K43dOGsH
+    # system urls
+    system_base_url: 'http://10.1.126.81:64200'
+    # integrations
+    snt_api_url: 'http://10.1.126.81:8081/api/v1.0'
+    snc_api_url: 'http://10.1.126.81:8082/api/v1.0'
+    

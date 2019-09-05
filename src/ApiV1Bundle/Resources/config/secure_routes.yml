@@ -1,0 +1,8 @@
+parameters:
+    secureroutes:
+        '/api/v1.0/token/test':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/usuarios':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']

@@ -1,0 +1,27 @@
+# This file is auto-generated during the composer install
+parameters:
+    # database
+    database_driver: pdo_mysql
+    database_host: hxv-sntdb.hexacta.com
+    database_port: 3306
+    database_name: users_develop
+    database_user: root
+    database_password: asdf1234
+    # database testing
+    database_testing_driver: pdo_mysql
+    database_testing_host: hxv-sntdb.hexacta.com
+    database_testing_port: 3306
+    database_testing_name: users_unit_back
+    database_testing_user: root
+    database_testing_password: asdf1234
+    # security
+    secret: 37f9f4e165b033fb76cc2320838321cc57140e65
+    jwt_key_pass_phrase: 0f95db775183b6aa49b016c2b22b600e
+    snt_signature_key: XHiH7I7wV502uLxM9xrpii4XluB4wiuz
+    snc_signature_key: ZuCA2UsrUHH0uJj156gwvQ37K43dOGsH
+    # system urls
+    system_base_url: 'http://snt-usuarios.hexacta.com'
+    # integrations
+    snt_api_url: 'http://sntapi.hexacta.com:8080/api/v1.0'
+    snc_api_url: 'http://sncapi.hexacta.com:8080/api/v1.0'
+    

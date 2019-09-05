@@ -1,0 +1,10 @@
+parameters:
+    user.header.listener.class: ApiV1Bundle\EventListener\HeadersListener
+
+services:
+    user.headers.action_listeners:
+        class: '%user.header.listener.class%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+        arguments: ['@user.validator.token', '%secureroutes%', '@kernel']

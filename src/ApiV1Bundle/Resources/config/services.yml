@@ -1,0 +1,137 @@
+parameters:
+    # services
+    user.services.login.class: ApiV1Bundle\ApplicationServices\LoginServices
+    user.services.logout.class: ApiV1Bundle\ApplicationServices\LogoutServices
+    user.services.contrasena.class: ApiV1Bundle\ApplicationServices\ContrasenaServices
+    user.services.usuario.class: ApiV1Bundle\ApplicationServices\UsuarioServices
+    user.services.verificarUsuario.class: ApiV1Bundle\ApplicationServices\VerificarUsuarioServices
+    user.roles.services.class: ApiV1Bundle\ApplicationServices\RolesServices
+
+    # integration
+    user.integration.security.class: ApiV1Bundle\ExternalServices\SecurityIntegration
+    user.integration.usuario.class: ApiV1Bundle\ExternalServices\UsuarioIntegration
+    user.integration.contrasena.class: ApiV1Bundle\ExternalServices\ContrasenaIntegration
+
+    # external services
+    user.external.service.class: ApiV1Bundle\ExternalServices\ExternalService
+    user.external.service.mock.class: ApiV1Bundle\Mocks\ExternalServiceMock
+
+    # repositories
+    user.repository.token.class: ApiV1Bundle\Repository\TokenRepository
+    user.repository.usuario.class: ApiV1Bundle\Repository\UsuarioRepository
+
+    # security
+    user.helper.jwtoken.class: ApiV1Bundle\Helper\JWToken
+    user.security.builder.class: Lcobucci\JWT\Builder
+    user.security.parser.class: Lcobucci\JWT\Parser
+    user.security.validation.class: Lcobucci\JWT\ValidationData
+
+    # validators
+    user.validator.usuario.class: ApiV1Bundle\Entity\Validator\UsuarioValidator
+    user.validator.login.class: ApiV1Bundle\Entity\Validator\LoginValidator
+    user.validator.token.class: ApiV1Bundle\Entity\Validator\TokenValidator
+    user.validator.communication.class: ApiV1Bundle\Entity\Validator\CommunicationValidator
+    user.validator.contrasena.class: ApiV1Bundle\Entity\Validator\ContrasenaValidator
+
+services:
+
+    ## SECURITY ##
+
+    user.security.builder:
+        class: '%user.security.builder.class%'
+
+    user.security.parser:
+        class: '%user.security.parser.class%'
+
+    user.security.validation:
+        class: '%user.security.validation.class%'
+    
+    user.helper.jwtoken:
+        class: '%user.helper.jwtoken.class%'
+        arguments: ['@service_container', '%secret%', '@user.security.builder', '@user.security.parser', '@user.security.validation']
+
+    ### EXTERNAL SERVICES ###
+
+    user.external.service:
+        class: '%user.external.service.class%'
+        arguments: ['@service_container']
+
+    user.external.service.mock:
+        class: '%user.external.service.mock.class%'
+        arguments: ['@service_container']
+
+    ### REPOSITORIES ###
+
+    user.repository.token:
+        class: '%user.repository.token.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Token
+
+    user.repository.usuario:
+        class: '%user.repository.usuario.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Usuario
+
+    ### INTEGRATIONS ###
+
+    user.integration.security:
+        class: '%user.integration.security.class%'
+        arguments: ['@service_container', '@user.external.service', '@user.external.service.mock']
+
+    user.integration.usuario:
+        class: '%user.integration.usuario.class%'
+        arguments: ['@service_container', '@user.external.service', '@user.external.service.mock']
+
+    user.integration.contrasena:
+        class: '%user.integration.contrasena.class%'
+        arguments: ['@service_container', '@user.external.service', '@user.external.service.mock']
+
+    ### VALIDATORS ###
+
+    user.validator.usuario:
+        class: '%user.validator.usuario.class%'
+        arguments: ['@service_container']
+
+    user.validator.login:
+        class: '%user.validator.login.class%'
+        arguments: ['@service_container']
+
+    user.validator.token:
+        class: '%user.validator.token.class%'
+        arguments: ['@user.repository.usuario', '@user.repository.token', '@user.helper.jwtoken']
+
+    user.validator.communication:
+        class: '%user.validator.communication.class%'
+        arguments: ['@service_container']
+
+    user.validator.contrasena:
+        class: '%user.validator.contrasena.class%'
+        arguments: ['@service_container']
+
+    ### SERVICES ###
+
+    user.services.login:
+        class: '%user.services.login.class%'
+        arguments: ['@service_container', '@user.integration.security', '@user.repository.usuario', '@user.validator.usuario', '@user.integration.usuario', '@user.validator.login', '@user.helper.jwtoken']
+
+    user.services.contrasena:
+        class: '%user.services.contrasena.class%'
+        arguments: ['@service_container', '@user.validator.contrasena', '@user.repository.usuario', '@user.integration.contrasena', '@user.validator.token']
+        
+    user.services.logout:
+        class: '%user.services.logout.class%'
+        arguments: ['@service_container', '@user.integration.security', '@user.repository.token']
+
+    user.services.usuario:
+        class: '%user.services.usuario.class%'
+        arguments: ['@service_container', '@user.integration.usuario', '@user.repository.usuario', '@user.validator.usuario', '@user.services.verificarUsuario', '@user.roles.services']
+
+    user.services.verificarUsuario:
+        class: '%user.services.verificarUsuario.class%'
+        arguments: ['@service_container', '@user.integration.usuario', '@user.validator.usuario']
+
+    user.roles.services:
+        class: '%user.roles.services.class%'
+        arguments: ['@user.validator.token', '@user.repository.usuario']
